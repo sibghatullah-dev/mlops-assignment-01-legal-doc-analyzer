@@ -171,7 +171,7 @@ pipeline {
                 
                 // Try to send email if credential exists
                 try {
-                    def adminEmail = 'admin@example.com' // Replace with your email or credential ID
+                    def adminEmail = 'zainabbax.mail@gmail.com' // Replace with your email or credential ID
                     emailext(
                             subject: "✅ SUCCESS: Legal Doc Analyzer Local Deployment - Build #${BUILD_NUMBER}",
                             body: """
