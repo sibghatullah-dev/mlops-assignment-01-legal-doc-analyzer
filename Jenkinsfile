@@ -61,7 +61,7 @@ pipeline {
         stage('Stop Previous Container') {
             steps {
                 script {
-                    echo "� Stopping and removing previous container if exists..."
+                    echo "🛑 Stopping and removing previous container if exists..."
                     sh """
                         # Stop and remove existing container if running
                         if docker ps -q -f name=${CONTAINER_NAME}; then
@@ -171,7 +171,7 @@ pipeline {
                 
                 // Try to send email if credential exists
                 try {
-                    def adminEmail = credentials('admin-email')
+                    def adminEmail = 'zainabbax.mail@gmail.com' // Replace with your email or credential ID
                     emailext(
                             subject: "✅ SUCCESS: Legal Doc Analyzer Local Deployment - Build #${BUILD_NUMBER}",
                             body: """
@@ -256,7 +256,7 @@ pipeline {
                 
                 // Try to send email if credential exists
                 try {
-                    def adminEmail = credentials('admin-email')
+                    def adminEmail = 'admin@example.com' // Replace with your email or credential ID
                     emailext(
                             subject: "❌ FAILED: Legal Doc Analyzer Local Deployment - Build #${BUILD_NUMBER}",
                             body: """
