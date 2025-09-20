@@ -4,31 +4,39 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
     types: [ closed ]
+    branches: [ main ]
 
 jobs:
   trigger-jenkins:
     name: Trigger Jenkins Deployment
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event.pull_request.merged == true)
-    
+
+    # Only run on push to main or merged PR to main
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Trigger Jenkins Job
       run: |
-        echo "🚀 Triggering Jenkins deployment job..."
+        echo "🚀 Triggering Jenkins deployment job for branch '${{ github.ref_name }}'..."
+        
         response=$(curl -s -w "%{http_code}" -X POST \
-          -u ${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }} \
+          -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
           "${{ secrets.JENKINS_URL }}/job/legal-doc-analyzer-deploy/build" \
-          --data-urlencode json='{"parameter": [{"name":"BRANCH", "value":"'${{ github.ref_name }}'"}]}')
+          --data-urlencode json='{
+            "parameter": [
+              {"name":"BRANCH", "value":"${{ github.ref_name }}"}
+            ]
+          }')
         
         http_code=$(echo "$response" | tail -n1)
-        if [ "$http_code" -eq 201 ] || [ "$http_code" -eq 200 ]; then
+        if [[ "$http_code" == "201" || "$http_code" == "200" ]]; then
           echo "✅ Jenkins job triggered successfully!"
-          echo "Jenkins Build URL: ${{ secrets.JENKINS_URL }}/job/legal-doc-analyzer-deploy/"
         else
           echo "❌ Failed to trigger Jenkins job. HTTP Code: $http_code"
           exit 1
@@ -37,10 +45,9 @@ jobs:
         JENKINS_URL: ${{ secrets.JENKINS_URL }}
         JENKINS_USER: ${{ secrets.JENKINS_USER }}
         JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
-        
+
     - name: Notify Deployment Started
       if: success()
       run: |
-        echo "✅ Successfully triggered Jenkins deployment job"
-        echo "🔗 Monitor deployment at: ${{ secrets.JENKINS_URL }}/job/legal-doc-analyzer-deploy/"
-        echo "📧 Admin will receive email notification upon completion"
+        echo "✅ Deployment started"
+        echo "🔗 Jenkins URL: ${{ secrets.JENKINS_URL }}/job/legal-doc-analyzer-deploy/"
