@@ -1,0 +1,54 @@
+name: Unit Testing
+
+on:
+  pull_request:
+    branches: [ "test" ]
+  push:
+    branches: [ "test" ]
+
+jobs:
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r app/requirements.txt
+          pip install pytest pytest-cov
+          
+      - name: Run unit tests
+        run: |
+          echo "Running unit tests..."
+          pytest tests/ -v --cov=app --cov-report=xml --cov-report=term
+          echo "✅ All unit tests passed!"
+          
+      - name: Upload coverage to Codecov (optional)
+        if: success()
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          
+      - name: Comment on PR with test results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Unit tests passed! Ready for merge to master branch.'
+            })

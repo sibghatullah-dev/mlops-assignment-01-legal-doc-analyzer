@@ -1,0 +1,74 @@
+.venv/
+venv/
+__pycache__/
+
+/data/*
+!/data/README.md
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python specific
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment files
+.env
+.env.local
+.env.*
+
+# Model files and logs
+results/
+logs/
+# Exclude all large model and training files
+*.pt
+*.pth
+*.bin
+
+# Large model files (to be managed separately)
+app/model/*.safetensors
+app/model/model.safetensors
+app/model/tokenizer.json
+*.ckpt
+
+# Allow small configuration files in model directory
+!app/model/config.json
+!app/model/tokenizer_config.json
+!app/model/special_tokens_map.json
+!app/model/vocab.txt
+!app/model/README.md
+
+# Only allow very small test files
+!tests/**/*.pt
+!tests/fixtures/*.pt
+!tests/**/*.pth
+!tests/fixtures/*.pth
+
+# Setup and documentation guides (exclude from repository)
+COMPLETE_SETUP_GUIDE.md
+CODE_MIGRATION_GUIDE.md
+QUICK_START.md
+BRANCH_PROTECTION_SETUP.md
