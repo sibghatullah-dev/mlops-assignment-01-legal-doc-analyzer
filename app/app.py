@@ -53,7 +53,6 @@ def analyze_contract(text):
             "flagged": False,
             "explanation": "Mock analysis - model not loaded"
         }
-    
     # Preprocess and tokenize
     inputs = tokenizer(
         text, return_tensors="pt", truncation=True, padding=True, max_length=256
