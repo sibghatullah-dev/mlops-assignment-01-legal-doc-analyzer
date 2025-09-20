@@ -2,6 +2,9 @@
 
 This project analyzes legal contracts for risks, loopholes, and compliance issues using a fine-tuned LegalBERT model on the CUAD dataset. It includes a comprehensive CI/CD pipeline with GitHub Actions, Jenkins, and Docker.
 
+## 🚀 CI/CD Pipeline Status
+**Pipeline Status**: Active and Testing ✅
+
 ## 🏗️ CI/CD Pipeline Architecture
 
 The project implements a complete CI/CD pipeline with the following workflow:
@@ -294,3 +297,4 @@ For a 2-member team:
 ## 📄 License
 
 This project is designed for educational purposes as part of an MLOps assignment.
+# CI/CD Pipeline Test
