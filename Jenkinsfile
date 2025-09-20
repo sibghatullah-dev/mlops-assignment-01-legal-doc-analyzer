@@ -6,7 +6,6 @@ pipeline {
         DOCKER_TAG = "${BUILD_NUMBER}"
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
         ADMIN_EMAIL = credentials('admin-email')
-        DOCKER_HOST = 'unix:///home/zain-abbas/.docker/desktop/docker.sock'
     }
     
     stages {
