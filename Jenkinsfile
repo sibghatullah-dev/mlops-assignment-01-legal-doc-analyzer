@@ -1,11 +1,6 @@
 pipeline {
     agent any
     
-    // Only trigger this pipeline on main branch
-    when {
-        branch 'main'
-    }
-    
     environment {
         DOCKER_IMAGE = 'legal-doc-analyzer'
         DOCKER_TAG = "${BUILD_NUMBER}"
@@ -15,9 +10,13 @@ pipeline {
     
     stages {
         stage('Checkout') {
+            when {
+                branch 'main'
+            }
             steps {
                 checkout scm
                 script {
+                    echo "🔍 Running deployment pipeline on main branch..."
                     env.GIT_COMMIT_MSG = sh(
                         script: 'git log -1 --pretty=%B',
                         returnStdout: true
