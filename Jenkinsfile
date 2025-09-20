@@ -1,12 +1,9 @@
 pipeline {
     agent any
     
-    // Only trigger this pipeline on master/main branch
+    // Only trigger this pipeline on main branch
     when {
-        anyOf {
-            branch 'master'
-            branch 'main'
-        }
+        branch 'main'
     }
     
     environment {
