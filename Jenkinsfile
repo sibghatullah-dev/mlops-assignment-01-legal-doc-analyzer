@@ -61,7 +61,7 @@ pipeline {
         stage('Stop Previous Container') {
             steps {
                 script {
-                    echo "� Stopping and removing previous container if exists..."
+                    echo "🛑 Stopping and removing previous container if exists..."
                     sh """
                         # Stop and remove existing container if running
                         if docker ps -q -f name=${CONTAINER_NAME}; then
@@ -144,38 +144,35 @@ pipeline {
     
     post {
         always {
-            node {
-                script {
-                    echo "🧹 Cleaning up Docker resources..."
-                    sh """
-                        # Clean up dangling images
-                        docker image prune -f || true
-                        
-                        # Show current Docker status
-                        echo "=== CURRENT DOCKER STATUS ==="
-                        docker ps -a
-                        echo "=== DOCKER IMAGES ==="
-                        docker images
-                    """
-                }
+            script {
+                echo "🧹 Cleaning up Docker resources..."
+                sh """
+                    # Clean up dangling images
+                    docker image prune -f || true
+                    
+                    # Show current Docker status
+                    echo "=== CURRENT DOCKER STATUS ==="
+                    docker ps -a || true
+                    echo "=== DOCKER IMAGES ==="
+                    docker images || true
+                """
             }
         }
         
         success {
-            node {
-                script {
-                    def buildDuration = currentBuild.duration ? "${(currentBuild.duration / 1000).intValue()}s" : "N/A"
-                    def gitCommitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    def branchName = sh(script: 'git branch --show-current', returnStdout: true).trim()
-                    
-                    echo "✅ SUCCESS: Local deployment completed successfully!"
-                    echo "🌐 Application URL: http://localhost:${HOST_PORT}"
-                    echo "🐳 Container: ${CONTAINER_NAME} (${DOCKER_IMAGE}:${DOCKER_TAG})"
-                    
-                    // Try to send email if credential exists
-                    try {
-                        def adminEmail = credentials('admin-email')
-                        emailext(
+            script {
+                def buildDuration = currentBuild.duration ? "${(currentBuild.duration / 1000).intValue()}s" : "N/A"
+                def gitCommitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                def branchName = sh(script: 'git branch --show-current', returnStdout: true).trim()
+                
+                echo "✅ SUCCESS: Local deployment completed successfully!"
+                echo "🌐 Application URL: http://localhost:${HOST_PORT}"
+                echo "🐳 Container: ${CONTAINER_NAME} (${DOCKER_IMAGE}:${DOCKER_TAG})"
+                
+                // Try to send email if credential exists
+                try {
+                    def adminEmail = credentials('admin-email')
+                    emailext(
                             subject: "✅ SUCCESS: Legal Doc Analyzer Local Deployment - Build #${BUILD_NUMBER}",
                             body: """
                             <html>
@@ -245,24 +242,22 @@ pipeline {
                         echo "💡 Please configure 'admin-email' credential in Jenkins if you want email notifications"
                     }
                 }
-            }
         }
         
         failure {
-            node {
-                script {
-                    def buildDuration = currentBuild.duration ? "${(currentBuild.duration / 1000).intValue()}s" : "N/A"
-                    def gitCommitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    def branchName = sh(script: 'git branch --show-current', returnStdout: true).trim()
-                    def failureStage = currentBuild.result ?: "Unknown"
-                    
-                    echo "❌ FAILURE: Local deployment failed!"
-                    echo "🔍 Check the console logs for details"
-                    
-                    // Try to send email if credential exists
-                    try {
-                        def adminEmail = credentials('admin-email')
-                        emailext(
+            script {
+                def buildDuration = currentBuild.duration ? "${(currentBuild.duration / 1000).intValue()}s" : "N/A"
+                def gitCommitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                def branchName = sh(script: 'git branch --show-current', returnStdout: true).trim()
+                def failureStage = currentBuild.result ?: "Unknown"
+                
+                echo "❌ FAILURE: Local deployment failed!"
+                echo "🔍 Check the console logs for details"
+                
+                // Try to send email if credential exists
+                try {
+                    def adminEmail = credentials('admin-email')
+                    emailext(
                             subject: "❌ FAILED: Legal Doc Analyzer Local Deployment - Build #${BUILD_NUMBER}",
                             body: """
                             <html>
@@ -313,16 +308,13 @@ pipeline {
                         echo "💡 Please configure 'admin-email' credential in Jenkins if you want email notifications"
                     }
                 }
-            }
         }
         
         unstable {
-            node {
-                script {
-                    echo "⚠️ UNSTABLE: Local deployment completed with warnings!"
-                    echo "🔍 Check the console logs and test results for details"
-                    echo "🌐 Application may still be accessible at: http://localhost:${HOST_PORT}"
-                }
+            script {
+                echo "⚠️ UNSTABLE: Local deployment completed with warnings!"
+                echo "🔍 Check the console logs and test results for details"
+                echo "🌐 Application may still be accessible at: http://localhost:${HOST_PORT}"
             }
         }
     }
