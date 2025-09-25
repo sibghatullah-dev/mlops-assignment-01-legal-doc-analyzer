@@ -152,9 +152,9 @@ pipeline {
                     
                     # Show current Docker status
                     echo "=== CURRENT DOCKER STATUS ==="
-                    docker ps -a || true
+                    docker ps -a
                     echo "=== DOCKER IMAGES ==="
-                    docker images || true
+                    docker images
                 """
             }
         }
@@ -171,7 +171,7 @@ pipeline {
                 
                 // Try to send email if credential exists
                 try {
-                    def adminEmail = credentials('admin-email')
+                    def adminEmail = 'zainabbax.mail@gmail.com' // Replace with your email or credential ID
                     emailext(
                             subject: "✅ SUCCESS: Legal Doc Analyzer Local Deployment - Build #${BUILD_NUMBER}",
                             body: """
@@ -256,7 +256,7 @@ pipeline {
                 
                 // Try to send email if credential exists
                 try {
-                    def adminEmail = credentials('admin-email')
+                    def adminEmail = 'zainabbax.mail@gmail.com' // Replace with your email or credential ID
                     emailext(
                             subject: "❌ FAILED: Legal Doc Analyzer Local Deployment - Build #${BUILD_NUMBER}",
                             body: """
