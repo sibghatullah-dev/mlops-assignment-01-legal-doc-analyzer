@@ -1,13 +1,26 @@
-# Model Files Directory
+# Model Files Directory - Google Drive Integration
 
-This directory contains the pre-trained model files for the Legal Document Analyzer.
+This directory contains the fine-tuned LegalBERT model files for the Legal Document Analyzer.
 
-## Required Files:
+## Model Files (Downloaded from Google Drive):
+- `model.safetensors` (417.67 MB) - Fine-tuned LegalBERT weights  
+- `tokenizer.json` (686 KB) - Tokenizer file
 - `config.json` - Model configuration
-- `model.safetensors` - Pre-trained model weights (excluded from git due to size)
-- `tokenizer.json` - Tokenizer data
 - `tokenizer_config.json` - Tokenizer configuration
 - `vocab.txt` - Vocabulary file
+- `special_tokens_map.json` - Special tokens mapping
+
+## Automatic Download
+
+Large model files are automatically downloaded during Docker build from:
+**Google Drive**: https://drive.google.com/file/d/1QqgKPDfdIdgMuBGSpcM5DPEL2BHsVHHg/view?usp=sharing
+
+## Manual Setup
+
+For local development, run:
+```bash
+./download_models.sh
+```
 - `special_tokens_map.json` - Special tokens mapping
 
 ## Setup:
