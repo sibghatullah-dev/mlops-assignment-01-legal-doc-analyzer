@@ -5,3 +5,5 @@ flake8
 pytest
 scikit-learn
 accelerate>=0.26.0
+gunicorn
+pytest-cov

@@ -1,0 +1,47 @@
+# Ignore virtual environment
+venv/
+env/
+ENV/
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Ignore data files (large datasets)
+data/*.json
+!data/README.md
+
+# Ignore model checkpoints and results
+results/
+*.pth
+*.pt
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore logs
+*.log
+nohup.out
+
+# Ignore test coverage
+.coverage
+htmlcov/
+
+# Ignore temporary files
+*.tmp
+*.bak
+.pytest_cache/

@@ -60,8 +60,8 @@ logs/
 !app/model/special_tokens_map.json
 !app/model/vocab.txt
 !app/model/README.md
-!app/model/model.safetensors
-!app/model/tokenizer.json
+app/model/model.safetensors
+app/model/tokenizer.json
 
 # Only allow very small test files
 !tests/**/*.pt
