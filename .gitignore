@@ -73,4 +73,6 @@ app/model/tokenizer.json
 COMPLETE_SETUP_GUIDE.md
 CODE_MIGRATION_GUIDE.md
 QUICK_START.md
-BRANCH_PROTECTION_SETUP.md
+BRANCH_PROTECTION_SETUP.mdapp/model/*.safetensors
+app/model/model.safetensors
+app/model/*.bin
